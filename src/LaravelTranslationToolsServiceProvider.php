@@ -4,7 +4,7 @@ namespace danielvdspoel\LaravelTranslationTools;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use danielvdspoel\LaravelTranslationTools\Commands\LaravelTranslationToolsCommand;
+use danielvdspoel\LaravelTranslationTools\Commands\CheckTranslationsCommand;
 
 class LaravelTranslationToolsServiceProvider extends PackageServiceProvider
 {
@@ -17,9 +17,6 @@ class LaravelTranslationToolsServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('laravel-translation-tools')
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_laravel-translation-tools_table')
-            ->hasCommand(LaravelTranslationToolsCommand::class);
+            ->hasCommand(CheckTranslationsCommand::class);
     }
 }
