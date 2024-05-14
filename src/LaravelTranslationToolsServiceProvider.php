@@ -2,9 +2,9 @@
 
 namespace danielvdspoel\LaravelTranslationTools;
 
+use danielvdspoel\LaravelTranslationTools\Commands\LaravelTranslationToolsCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use danielvdspoel\LaravelTranslationTools\Commands\LaravelTranslationToolsCommand;
 
 class LaravelTranslationToolsServiceProvider extends PackageServiceProvider
 {
