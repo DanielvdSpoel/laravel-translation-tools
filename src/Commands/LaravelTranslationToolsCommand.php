@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace danielvdspoel\LaravelTranslationTools\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelTranslationToolsCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-translation-tools';
 
     public $description = 'My command';
 

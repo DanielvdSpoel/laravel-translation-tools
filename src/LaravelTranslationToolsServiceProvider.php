@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace danielvdspoel\LaravelTranslationTools;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
+use danielvdspoel\LaravelTranslationTools\Commands\LaravelTranslationToolsCommand;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class LaravelTranslationToolsServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -16,10 +16,10 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('skeleton')
+            ->name('laravel-translation-tools')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_skeleton_table')
-            ->hasCommand(SkeletonCommand::class);
+            ->hasMigration('create_laravel-translation-tools_table')
+            ->hasCommand(LaravelTranslationToolsCommand::class);
     }
 }
