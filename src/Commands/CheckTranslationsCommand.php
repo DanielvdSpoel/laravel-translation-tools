@@ -24,6 +24,7 @@ class CheckTranslationsCommand extends Command
 
         if (! $filesystem->exists($localeRootDirectory)) {
             $this->error("The directory `{$localeRootDirectory}` does not exist.");
+
             return self::FAILURE;
         }
 
@@ -38,22 +39,22 @@ class CheckTranslationsCommand extends Command
                 $files = $filesystem->allFiles($localeDir);
                 $baseFiles = $filesystem->allFiles(implode(DIRECTORY_SEPARATOR, [$localeRootDirectory, $baseLanguage]));
 
-                $localeFiles = collect($files)->map(fn ($file) => (string) str($file->getPathname())->after(DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR));
-                $baseFiles = collect($baseFiles)->map(fn ($file) => (string) str($file->getPathname())->after(DIRECTORY_SEPARATOR . $baseLanguage . DIRECTORY_SEPARATOR));
+                $localeFiles = collect($files)->map(fn ($file) => (string) str($file->getPathname())->after(DIRECTORY_SEPARATOR.$locale.DIRECTORY_SEPARATOR));
+                $baseFiles = collect($baseFiles)->map(fn ($file) => (string) str($file->getPathname())->after(DIRECTORY_SEPARATOR.$baseLanguage.DIRECTORY_SEPARATOR));
                 $missingFiles = $baseFiles->diff($localeFiles);
                 $removedFiles = $localeFiles->diff($baseFiles);
                 $path = implode(DIRECTORY_SEPARATOR, [$localeRootDirectory, $locale]);
 
                 if ($missingFiles->count() > 0 && $removedFiles->count() > 0) {
-                    $this->warn("[!] Found {$missingFiles->count()} missing translation " . Str::plural('file', $missingFiles->count()) . " and {$removedFiles->count()} removed translation " . Str::plural('file', $missingFiles->count()) . ' for ' . locale_get_display_name($locale, 'en') . ".\n");
+                    $this->warn("[!] Found {$missingFiles->count()} missing translation ".Str::plural('file', $missingFiles->count())." and {$removedFiles->count()} removed translation ".Str::plural('file', $missingFiles->count()).' for '.locale_get_display_name($locale, 'en').".\n");
 
                     $this->newLine();
                 } elseif ($missingFiles->count() > 0) {
-                    $this->warn("[!] Found {$missingFiles->count()} missing translation " . Str::plural('file', $missingFiles->count()) . ' for ' . locale_get_display_name($locale, 'en') . ".\n");
+                    $this->warn("[!] Found {$missingFiles->count()} missing translation ".Str::plural('file', $missingFiles->count()).' for '.locale_get_display_name($locale, 'en').".\n");
 
                     $this->newLine();
                 } elseif ($removedFiles->count() > 0) {
-                    $this->warn("[!] Found {$removedFiles->count()} removed translation " . Str::plural('file', $removedFiles->count()) . ' for ' . locale_get_display_name($locale, 'en') . ".\n");
+                    $this->warn("[!] Found {$removedFiles->count()} removed translation ".Str::plural('file', $removedFiles->count()).' for '.locale_get_display_name($locale, 'en').".\n");
 
                     $this->newLine();
                 }
@@ -102,11 +103,11 @@ class CheckTranslationsCommand extends Command
 
                             $this->newLine();
                         } elseif ($missingKeysCount > 0 && $removedKeysCount > 0) {
-                            $this->warn("[!] Found {$missingKeysCount} missing translation " . Str::plural('key', $missingKeysCount) . " and {$removedKeysCount} removed translation " . Str::plural('key', $removedKeysCount) . " for {$locale}.\n");
+                            $this->warn("[!] Found {$missingKeysCount} missing translation ".Str::plural('key', $missingKeysCount)." and {$removedKeysCount} removed translation ".Str::plural('key', $removedKeysCount)." for {$locale}.\n");
                         } elseif ($missingKeysCount > 0) {
-                            $this->warn("[!] Found {$missingKeysCount} missing translation " . Str::plural('key', $missingKeysCount) . " for {$locale}.\n");
+                            $this->warn("[!] Found {$missingKeysCount} missing translation ".Str::plural('key', $missingKeysCount)." for {$locale}.\n");
                         } elseif ($removedKeysCount > 0) {
-                            $this->warn("[!] Found {$removedKeysCount} removed translation " . Str::plural('key', $removedKeysCount) . " for {$locale}.\n");
+                            $this->warn("[!] Found {$removedKeysCount} removed translation ".Str::plural('key', $removedKeysCount)." for {$locale}.\n");
                         }
                     })
                     ->filter(static fn ($keys): bool => count($keys['missing']) || count($keys['removed']))
