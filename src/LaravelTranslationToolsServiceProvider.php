@@ -6,6 +6,7 @@ use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use danielvdspoel\LaravelTranslationTools\Commands\CheckTranslationsCommand;
 
+
 class LaravelTranslationToolsServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
