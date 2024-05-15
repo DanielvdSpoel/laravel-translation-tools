@@ -2,9 +2,9 @@
 
 namespace danielvdspoel\LaravelTranslationTools\Tests;
 
+use danielvdspoel\LaravelTranslationTools\LaravelTranslationToolsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use danielvdspoel\LaravelTranslationTools\LaravelTranslationToolsServiceProvider;
 
 class TestCase extends Orchestra
 {
