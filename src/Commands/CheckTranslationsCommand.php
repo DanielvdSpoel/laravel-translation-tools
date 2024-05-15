@@ -9,6 +9,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use SplFileInfo;
 
+/**
+ * Class CheckTranslationsCommand
+ *
+ * Code was copied from https://github.com/filamentphp/filament/blob/3.x/packages/support/src/Commands/CheckTranslationsCommand.php
+ * and modified to work with non-Filament projects.
+ */
 class CheckTranslationsCommand extends Command
 {
     public $signature = 'translations:check {--base-locale= : The base language to compare against.} {--locales=* : The languages to check.} {--source= : The source directory to check.}';
