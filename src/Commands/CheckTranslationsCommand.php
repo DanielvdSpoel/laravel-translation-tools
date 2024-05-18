@@ -23,6 +23,7 @@ class CheckTranslationsCommand extends Command
 
     public function handle(): int
     {
+        $isMissingTranslations = false;
         $baseLanguage = $this->option('base-locale') ?? config('app.locale', config('app.fallback_locale', 'en'));
         $localeRootDirectory = $this->option('source') ?? lang_path();
 
@@ -41,7 +42,7 @@ class CheckTranslationsCommand extends Command
                 $locales = $this->option('locales'),
                 fn (Collection $availableLocales): Collection => $availableLocales->filter(fn (string $locale): bool => in_array($locale, $locales))
             )
-            ->each(function (string $locale, string $localeDir) use ($baseLanguage, $filesystem, $localeRootDirectory) {
+            ->each(function (string $locale, string $localeDir) use ($isMissingTranslations, $baseLanguage, $filesystem, $localeRootDirectory) {
                 $files = $filesystem->allFiles($localeDir);
                 $baseFiles = $filesystem->allFiles(implode(DIRECTORY_SEPARATOR, [$localeRootDirectory, $baseLanguage]));
 
@@ -52,14 +53,17 @@ class CheckTranslationsCommand extends Command
                 $path = implode(DIRECTORY_SEPARATOR, [$localeRootDirectory, $locale]);
 
                 if ($missingFiles->count() > 0 && $removedFiles->count() > 0) {
+                    $isMissingTranslations = true;
                     $this->warn("[!] Found {$missingFiles->count()} missing translation ".Str::plural('file', $missingFiles->count())." and {$removedFiles->count()} removed translation ".Str::plural('file', $missingFiles->count()).' for '.locale_get_display_name($locale, 'en').".\n");
 
                     $this->newLine();
                 } elseif ($missingFiles->count() > 0) {
+                    $isMissingTranslations = true;
                     $this->warn("[!] Found {$missingFiles->count()} missing translation ".Str::plural('file', $missingFiles->count()).' for '.locale_get_display_name($locale, 'en').".\n");
 
                     $this->newLine();
                 } elseif ($removedFiles->count() > 0) {
+                    $isMissingTranslations = true;
                     $this->warn("[!] Found {$removedFiles->count()} removed translation ".Str::plural('file', $removedFiles->count()).' for '.locale_get_display_name($locale, 'en').".\n");
 
                     $this->newLine();
@@ -98,7 +102,7 @@ class CheckTranslationsCommand extends Command
                             ],
                         ];
                     })
-                    ->tap(function (Collection $files) use ($locale) {
+                    ->tap(function (Collection $files) use ($locale, $isMissingTranslations) {
                         $missingKeysCount = $files->sum(fn ($file): int => count($file['missing']));
                         $removedKeysCount = $files->sum(fn ($file): int => count($file['removed']));
 
@@ -109,10 +113,13 @@ class CheckTranslationsCommand extends Command
 
                             $this->newLine();
                         } elseif ($missingKeysCount > 0 && $removedKeysCount > 0) {
+                            $isMissingTranslations = true;
                             $this->warn("[!] Found {$missingKeysCount} missing translation ".Str::plural('key', $missingKeysCount)." and {$removedKeysCount} removed translation ".Str::plural('key', $removedKeysCount)." for {$locale}.\n");
                         } elseif ($missingKeysCount > 0) {
+                            $isMissingTranslations = true;
                             $this->warn("[!] Found {$missingKeysCount} missing translation ".Str::plural('key', $missingKeysCount)." for {$locale}.\n");
                         } elseif ($removedKeysCount > 0) {
+                            $isMissingTranslations = true;
                             $this->warn("[!] Found {$removedKeysCount} removed translation ".Str::plural('key', $removedKeysCount)." for {$locale}.\n");
                         }
                     })
@@ -132,6 +139,6 @@ class CheckTranslationsCommand extends Command
 
             });
 
-        return self::SUCCESS;
+        return $isMissingTranslations ? self::FAILURE : self::SUCCESS;
     }
 }
