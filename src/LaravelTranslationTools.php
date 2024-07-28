@@ -2,6 +2,4 @@
 
 namespace danielvdspoel\LaravelTranslationTools;
 
-class LaravelTranslationTools
-{
-}
+class LaravelTranslationTools {}
